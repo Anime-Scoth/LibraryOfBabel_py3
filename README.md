@@ -1,4 +1,4 @@
-# Library Of Babel
+# Library Of Babel Python3
 ## About
 This is an open source python implementation of the [Library of Babel](libraryofbabel.info).
 ## Functionality
