@@ -2,17 +2,6 @@ import string
 import random
 import sys
 
-
-# 29 output letters: alphabet plus comma, space, and period
-# alphanumeric in hex address (base self.number_of_an): 3260
-# in wall: 4
-# in shelf: 5
-# in volumes: 32
-# pages: 410
-# letters per page: 3200
-# titles have 25 char
-
-
 class LoB(object):
     digs = 'abcdefghijklmnopqrstuvwxyz, .'
     an = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -35,6 +24,7 @@ class LoB(object):
     color_red = '\033[93m'
     color_default = '\033[0m'
 
+    @classmethod
     def text_prep(cls, text):
         digs = set(cls.digs)
         prepared = ''
@@ -68,7 +58,7 @@ class LoB(object):
         if input_dict['--file'][0]:
             with open(input_dict['--file'][1], 'w') as file:
                 file.writelines(text)
-            print('\nFile ' + input_dict['--file'][1] + ' was writen')
+            print('\nFile ' + input_dict['--file'][1] + ' was written')
 
     def search(self, search_str):
         wall = str(int(random.random() * self.number_of_wall))
@@ -80,10 +70,10 @@ class LoB(object):
         hex_addr = ''
         depth = int(random.random()*(self.length_of_page - len(search_str)))
         front_padding = ''
-        for x in xrange(depth):
+        for x in range(depth):
             front_padding += self.digs[int(random.random() * len(self.digs))]
         back_padding = ''
-        for x in xrange(self.length_of_page - (depth + len(search_str))):
+        for x in range(self.length_of_page - (depth + len(search_str))):
             back_padding += self.digs[int(random.random() * len(self.digs))]
         search_str = front_padding + search_str + back_padding
         hex_addr = self.int2base(self.stringToNumber(search_str) + (loc_int * self.loc_mult), self.number_of_an)
@@ -115,14 +105,11 @@ class LoB(object):
         wall = str(int(random.random()*4))
         shelf = str(int(random.random()*5))
         volume = str(int(random.random()*32)).zfill(2)
-        # the string made up of all of the location numbers
         loc_str = volume + shelf + wall
         loc_int = int(loc_str)
-        # make integer
         hex_addr = ''
         search_str = search_str[:25].ljust(25)
         hex_addr = self.int2base(self.stringToNumber(search_str)+(loc_int * self.title_mult), self.number_of_an)
-        # change to base self.number_of_an and add loc_int, then make string
         key_str = hex_addr + ':' + wall + ':' + shelf + ':' + volume
         assert search_str == self.getTitle(key_str)
         return key_str
@@ -137,7 +124,6 @@ class LoB(object):
         str_an = self.int2base(key, self.number_of_an)
         result = self.toText(int(str_an, self.number_of_an))
         if len(result) < self.length_of_page:
-            # adding pseudorandom chars
             random.seed(result)
             while len(result) < self.length_of_page:
                 result += self.digs[int(random.random()*len(self.digs))]
@@ -156,7 +142,7 @@ class LoB(object):
         digits = []
         while x:
             digits.append(self.digs[x % 29])
-            x /= 29
+            x //= 29
         if sign < 0:
             digits.append('-')
         digits.reverse()
@@ -164,7 +150,7 @@ class LoB(object):
 
     def stringToNumber(self, iString):
         result = 0
-        for x in xrange(len(iString)):
+        for x in range(len(iString)):
             result += self.digs.index(iString[len(iString)-x-1])*pow(29, x)
         return result
 
@@ -179,7 +165,7 @@ class LoB(object):
         digits = []
         while x:
             digits.append(self.an[x % base])
-            x /= base
+            x //= base
         if sign < 0:
             digits.append('-')
         digits.reverse()
