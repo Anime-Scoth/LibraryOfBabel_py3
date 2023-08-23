@@ -14,7 +14,7 @@ def _cli_opts():
     Parse command line options.
     @returns the arguments
     '''
-    mepath = unicode(os.path.abspath(sys.argv[0]))
+    mepath = os.path.abspath(sys.argv[0])
     mebase = '%s' % (os.path.basename(mepath))
 
     description = '''
@@ -79,7 +79,7 @@ def _runbrowse(args):
 
     while True:
         book.printPage()
-        cmd = raw_input('> ')
+        cmd = input('> ')
         if '>' in cmd:
             book.next()
         elif '<' in cmd:
