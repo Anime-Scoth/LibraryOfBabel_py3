@@ -1,6 +1,5 @@
 from library_of_babel import LoB
 
-
 class Book(object):
     def __init__(self):
         self.str_key = ''
@@ -51,12 +50,11 @@ class Book(object):
     def new(self, str_key):
         self.str_key = str_key
         address = self.str_key.split(':')
+        if len(address) < 5:
+            raise ValueError("Invalid str_key format. It should be 'address:wall:shelf:volume:page'.")
         self.hex_addr = address[0]
         self.wall = int(address[1])
         self.shelf = int(address[2])
         self.volume = int(address[3].zfill(2))
-        if len(address) > 4:
-            self.page = int(address[4].zfill(3))
-        else:
-            self.page = 0
+        self.page = int(address[4].zfill(3))
         # self.loadPages()
